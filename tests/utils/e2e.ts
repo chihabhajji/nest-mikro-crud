@@ -1,10 +1,10 @@
-import {AbstractSchemaGenerator, AnyEntity, EntityName, MikroORM} from "@mikro-orm/core";
-import { MikroOrmModule } from "@mikro-orm/nestjs";
-import {ModuleMetadata, ValidationPipe} from "@nestjs/common";
-import { Test } from "@nestjs/testing";
+import {AnyEntity, EntityName, MikroORM} from "@mikro-orm/core";
+import {MikroOrmModule} from "@mikro-orm/nestjs";
+import {ModuleMetadata} from "@nestjs/common";
+import {Test} from "@nestjs/testing";
 import supertest from "supertest";
-import { Book, Line, Page, Summary } from "tests/e2e/entities";
-import {defineConfig, SchemaGenerator} from "@mikro-orm/sqlite";
+import {Book, Line, Page, Summary} from "tests/e2e/entities";
+import {defineConfig} from "@mikro-orm/sqlite";
 
 export async function prepareE2E(
   metadata: ModuleMetadata,

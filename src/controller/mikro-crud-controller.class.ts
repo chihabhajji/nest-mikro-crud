@@ -4,7 +4,7 @@ import {AnyEntity, EntityData} from "@mikro-orm/core";
 import {QueryParams} from "../dto";
 import {MikroCrudService} from "../service";
 import {LookupableField} from "../types";
-import {validate, validateOrReject} from "class-validator";
+import {validate} from "class-validator";
 import {BadRequestException} from "@nestjs/common";
 
 export abstract class MikroCrudController<
@@ -69,7 +69,6 @@ export abstract class MikroCrudController<
         console.dir({lookup, field: this.lookupField})
         const entity = await this.service
             .retrieve({
-                // @ts-ignore
                 conditions: {
                     [this.lookupField]: lookup,
                 },
@@ -89,7 +88,7 @@ export abstract class MikroCrudController<
     ): Promise<unknown> {
         let entity = await this.service
             .retrieve({
-                // @ts-ignore
+                
                 conditions: {
                     [this.lookupField]: lookup
                 },
@@ -117,7 +116,7 @@ export abstract class MikroCrudController<
     ): Promise<Entity> {
         let entity = await this.service
             .retrieve({
-                // @ts-ignore
+                
                 conditions: {
                     [this.lookupField]: lookup
                 },
@@ -147,7 +146,7 @@ export abstract class MikroCrudController<
     async destroy(lookup: Entity[LookupField], user: any): Promise<unknown> {
         const entity = await this.service
             .retrieve({
-                // @ts-ignore
+                
                 conditions: {
                     [this.lookupField]: lookup
                 },

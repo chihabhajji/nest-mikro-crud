@@ -31,9 +31,7 @@ describe("Entity Filter", () => {
   class TestService extends new MikroCrudServiceFactory({
     entity: Filtered,
     dto: {
-      // @ts-ignore
       create: CreateBookDto,
-      // @ts-ignore
       update: UpdateBookDto,
     },
   }).product {}
