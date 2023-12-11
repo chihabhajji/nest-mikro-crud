@@ -23,10 +23,6 @@ export class MikroCrudModule {
                 },
                 {
                     provide: APP_PIPE,
-                    useClass: QueryParser,
-                },
-                {
-                    provide: APP_PIPE,
                     useClass: ValidationPipe,
                 }
             ],
