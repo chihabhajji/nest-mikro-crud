@@ -47,6 +47,7 @@ export abstract class MikroCrudService<
     user?: any;
   }) {
     const filterConditions = await this.parser.parseFilter({ filter });
+    console.debug('filterConditions', filterConditions)
     const [results, total] = await this.repository.findAndCount(
       { $and: [conditions, filterConditions] } as FilterQuery<Entity>,
       {

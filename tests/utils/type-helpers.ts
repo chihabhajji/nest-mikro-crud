@@ -1,3 +1,5 @@
+// noinspection JSUnusedGlobalSymbols
+
 /**
  * Mark a class/function/module as mocked.
  * @param v

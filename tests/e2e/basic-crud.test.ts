@@ -64,7 +64,6 @@ describe("Basic CRUD", () => {
             const book = bookRepo.create({
                 name: "parent" + i,
                 price: i,
-
                 summary: {text: "summary" + i},
             });
             const page = pageRepo.create({
@@ -75,11 +74,11 @@ describe("Basic CRUD", () => {
                 book,
                 text: "summary" + i,
             });
-            bookRepo.persist(book);
-            pageRepo.persist(page);
-            summaryRepo.persist(summary);
+            bookRepo.getEntityManager().persist(book);
+            pageRepo.getEntityManager().persist(page);
+            summaryRepo.getEntityManager().persist(summary);
         }
-        summaryRepo.persist(
+        summaryRepo.getEntityManager().persist(
             summaryRepo.create(
                 // @ts-ignore
                 {
@@ -87,9 +86,9 @@ describe("Basic CRUD", () => {
                     text: "new",
                 })
         );
-        await bookRepo.flush();
-        await pageRepo.flush();
-        await summaryRepo.flush();
+        await bookRepo.getEntityManager().flush();
+        await pageRepo.getEntityManager().flush();
+        await summaryRepo.getEntityManager().flush();
     });
 
     describe("/ (GET)", () => {

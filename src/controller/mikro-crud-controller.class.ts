@@ -1,3 +1,5 @@
+// noinspection JSUnusedGlobalSymbols,DuplicatedCode
+
 import {AnyEntity, EntityData, FilterQuery} from "@mikro-orm/core";
 import { NotFoundException } from "@nestjs/common";
 import { QueryParams } from "../dto";

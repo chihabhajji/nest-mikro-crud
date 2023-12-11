@@ -38,14 +38,13 @@ export class QueryParser<Entity> {
     }): Promise<FilterQuery<Entity>> {
         const conditions: FilterQuery<Entity> = {};
 
-        rawFilters.forEach(async (raw) => {
+        for (const raw of rawFilters) {
             const [, path, rawOp, value] = /^(.*)\|(.+):(.*)$/.exec(raw)! as [
                 string,
                 ScalarPath<Entity>,
                 FilterOperator,
                 string
-            ] &
-                RegExpExecArray;
+            ] & RegExpExecArray;
 
             const parseMultiValues = () =>
                 value.split(/(?<!\\),/).map((v) => v.replace("\\,", ","));
@@ -56,14 +55,18 @@ export class QueryParser<Entity> {
                 (obj, key) => (obj[key] = obj[key] ?? {})
             ) as OperatorMap<unknown>;
 
-            if (rawOp == "isnull") fieldConditions.$eq = null;
-            else if (rawOp == "notnull") fieldConditions.$ne = null;
-            else {
-                if (rawOp == "in" || rawOp == "nin")
+            if (rawOp == "isnull") {
+                fieldConditions.$eq = null;
+            } else if (rawOp == "notnull") {
+                fieldConditions.$ne = null;
+            } else {
+                if (rawOp == "in" || rawOp == "nin") {
                     fieldConditions[`$${rawOp}` as const] = parseMultiValues();
-                else fieldConditions[`$${rawOp}` as const] = value;
+                } else {
+                    fieldConditions[`$${rawOp}` as const] = value;
+                }
             }
-        });
+        }
 
         return conditions;
     }

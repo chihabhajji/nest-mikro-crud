@@ -19,6 +19,7 @@ import { CreateBookDto, UpdateBookDto } from "./dtos";
 export class Filtered extends BaseEntity<Filtered, "id"> {
   @PrimaryKey()
   id!: number;
+
 }
 
 describe("Entity Filter", () => {
@@ -30,7 +31,9 @@ describe("Entity Filter", () => {
   class TestService extends new MikroCrudServiceFactory({
     entity: Filtered,
     dto: {
+      // @ts-ignore
       create: CreateBookDto,
+      // @ts-ignore
       update: UpdateBookDto,
     },
   }).product {}
@@ -57,7 +60,7 @@ describe("Entity Filter", () => {
     );
     for (let i = 1; i <= 2; i++) {
       const entity = new Filtered().assign({ id: i });
-      await repo.persistAndFlush(entity);
+      await repo.getEntityManager().persistAndFlush(entity);
     }
   });
 

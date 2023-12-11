@@ -1,8 +1,5 @@
 import {EntityRepository, ReferenceType} from "@mikro-orm/core";
-import {
-    AnyEntity,
-    EntityData,
-} from "@mikro-orm/core/typings";
+import {AnyEntity, EntityData} from "@mikro-orm/core/typings";
 import {InjectRepository} from "@mikro-orm/nestjs";
 import {Type} from "@nestjs/common";
 import {AbstractFactory} from "../abstract.factory";
@@ -40,8 +37,7 @@ export class MikroCrudServiceFactory<
         class Service extends MikroCrudService<Entity, CreateDto, UpdateDto> {
             @InjectRepository(entityClass)
             readonly repository!: EntityRepository<Entity>;
-            readonly collectionFields = (new entityClass() as Entity)
-                // @ts-ignore
+            readonly collectionFields = (new entityClass() as AnyEntity)
                 .__helper!.__meta.relations.filter(
                 ({reference, hidden}: { reference: ReferenceType, hidden: boolean }) =>
                     !hidden &&
