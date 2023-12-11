@@ -4,7 +4,7 @@
   "description": "Easily build REST full CRUD APIs for production.",
   "main": "lib/index.js",
   "scripts": {
-    "test": "jest --detectOpenHandles",
+    "test": "jest",
     "prebuild": "rimraf lib",
     "build": "tsc -b"
   },

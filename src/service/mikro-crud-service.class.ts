@@ -3,14 +3,15 @@ import {
   Collection,
   EntityRepository,
   FilterQuery,
-  NotFoundError, Ref,
+  NotFoundError,
+  Ref,
   Reference,
   wrap,
 } from "@mikro-orm/core";
-import { EntityData } from "@mikro-orm/core/typings";
-import { Inject } from "@nestjs/common";
-import { FilterQueryParam, OrderQueryParam, RelationPath } from "..";
-import { QueryParser, ENTITY_FILTERS, EntityFilters } from "../providers";
+import {EntityData} from "@mikro-orm/core/typings";
+import {Inject} from "@nestjs/common";
+import {FilterQueryParam, OrderQueryParam, RelationPath} from "..";
+import {ENTITY_FILTERS, EntityFilters, QueryParser} from "../providers";
 import NonFunctionPropertyNames = jest.NonFunctionPropertyNames;
 
 export abstract class MikroCrudService<
@@ -47,7 +48,6 @@ export abstract class MikroCrudService<
     user?: any;
   }) {
     const filterConditions = await this.parser.parseFilter({ filter });
-    console.debug('filterConditions', filterConditions)
     const [results, total] = await this.repository.findAndCount(
       { $and: [conditions, filterConditions] } as FilterQuery<Entity>,
       {
@@ -55,8 +55,7 @@ export abstract class MikroCrudService<
         offset,
         orderBy: await this.parser.parseOrder({ order }),
         filters: this.filters(user),
-        // TODO: Fix
-        populate: [...this.collectionFields, ...expand] as any,
+        populate: [...this.collectionFields, ...expand],
         refresh,
       }
     );
@@ -64,7 +63,7 @@ export abstract class MikroCrudService<
   }
 
   async create({ data }: { data: CreateDto; user?: any }): Promise<Entity> {
-    const entity = this.repository.create(data as any);
+    const entity = this.repository.create(data);
     this.repository.getEntityManager().persist(entity);
     return entity;
   }
@@ -82,7 +81,7 @@ export abstract class MikroCrudService<
   }): Promise<Entity> {
     return await this.repository.findOneOrFail(conditions, {
       filters: this.filters(user),
-      // populate: [...this.collectionFields, ...expand],
+      populate: [...this.collectionFields, ...expand],
       refresh,
     });
   }
