@@ -55,7 +55,7 @@ export abstract class MikroCrudService<
         offset,
         orderBy: await this.parser.parseOrder({ order }),
         filters: this.filters(user),
-        populate: [...this.collectionFields, ...expand],
+        populate: [...this.collectionFields, ...expand] as any,
         refresh,
       }
     );
@@ -63,7 +63,7 @@ export abstract class MikroCrudService<
   }
 
   async create({ data }: { data: CreateDto; user?: any }): Promise<Entity> {
-    const entity = this.repository.create(data);
+    const entity = this.repository.create(data as any);
     this.repository.getEntityManager().persist(entity);
     return entity;
   }
@@ -81,7 +81,7 @@ export abstract class MikroCrudService<
   }): Promise<Entity> {
     return await this.repository.findOneOrFail(conditions, {
       filters: this.filters(user),
-      populate: [...this.collectionFields, ...expand],
+      populate: [...this.collectionFields, ...expand] as any,
       refresh,
     });
   }
