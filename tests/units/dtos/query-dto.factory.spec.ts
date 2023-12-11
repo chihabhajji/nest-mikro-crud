@@ -1,5 +1,5 @@
 import { BaseEntity } from "@mikro-orm/core";
-import { plainToClass } from "class-transformer";
+import { plainToInstance } from "class-transformer";
 import { validateOrReject } from "class-validator";
 import { QueryParamsFactory } from "src";
 import { buildKeyChecker } from "tests/utils";
@@ -26,7 +26,7 @@ describe(QueryParamsFactory.name, () => {
 
     describe(d(".product"), () => {
       it("should use the default values when value not provided", () => {
-        const ret = plainToClass(factory.product, {});
+        const ret = plainToInstance(factory.product, {});
         expect(ret).toEqual({
           limit: 1,
           offset: 2,
@@ -66,7 +66,7 @@ describe(QueryParamsFactory.name, () => {
       "should throw an error when `$name` is $value",
       async ({ name, value }) => {
         await expect(
-          validateOrReject(plainToClass(factory.product, { [name]: value }))
+          validateOrReject(plainToInstance(factory.product, { [name]: value }))
         ).rejects.toBeDefined();
       }
     );
@@ -81,7 +81,7 @@ describe(QueryParamsFactory.name, () => {
       "should pass the validation when $name is $value",
       async ({ name, value }) => {
         await expect(
-          validateOrReject(plainToClass(factory.product, { [name]: value }))
+          validateOrReject(plainToInstance(factory.product, { [name]: value }))
         ).resolves.toBeUndefined();
       }
     );
@@ -94,7 +94,7 @@ describe(QueryParamsFactory.name, () => {
 
     describe(d(".product"), () => {
       it("should exclude the disabled params", () => {
-        instance = plainToClass(factory.product, {
+        instance = plainToInstance(factory.product, {
           order: ["b"],
           filter: ["c"],
         });

@@ -1,4 +1,4 @@
-import { AnyEntity, EntityData } from "@mikro-orm/core";
+import {AnyEntity, EntityData, FilterQuery} from "@mikro-orm/core";
 import { NotFoundException } from "@nestjs/common";
 import { QueryParams } from "../dto";
 import { MikroCrudService } from "../service";
@@ -66,7 +66,8 @@ export abstract class MikroCrudController<
     const conditions = { [this.lookupField]: lookup };
     const entity = await this.service
       .retrieve({
-        conditions,
+        // @ts-ignore
+        conditions: conditions,
         expand,
         user,
       })
@@ -87,6 +88,7 @@ export abstract class MikroCrudController<
     const conditions = { [this.lookupField]: lookup };
     let entity = await this.service
       .retrieve({
+        // @ts-ignore
         conditions,
         expand,
         user,
@@ -113,7 +115,8 @@ export abstract class MikroCrudController<
     data: UpdateDto,
     user: any
   ): Promise<unknown> {
-    const conditions = { [this.lookupField]: lookup };
+    // @ts-ignore
+    const conditions: FilterQuery<Entity> = { [this.lookupField]: lookup };
     let entity = await this.service
       .retrieve({
         conditions,
@@ -139,6 +142,7 @@ export abstract class MikroCrudController<
   async destroy(lookup: Entity[LookupField], user: any): Promise<unknown> {
     const conditions = { [this.lookupField]: lookup };
     const entity = await this.service
+        // @ts-ignore
       .retrieve({ conditions, user })
       .catch(() => {
         throw new NotFoundException();

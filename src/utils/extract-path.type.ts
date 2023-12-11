@@ -34,7 +34,7 @@ export type ExtractPath<
           : never)
       | (ItemTypeIfIterable<Target[K]> extends Visited
           ? never
-          : // @ts-expect-error - this IS NOT an infinite loop!!!!
+          :
             `${K}${Separator}${ExtractPath<
               ItemTypeIfIterable<Target[K]>,
               Condition,

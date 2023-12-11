@@ -1,4 +1,5 @@
 import {
+  Cascade,
   Collection,
   Entity,
   OneToMany,
@@ -30,6 +31,7 @@ export class Book {
   @OneToMany({
     entity: () => Page,
     mappedBy: (page) => page.book,
+    cascade: [Cascade.ALL]
   })
   pages = new Collection<Page>(this);
 
@@ -37,6 +39,7 @@ export class Book {
     entity: () => Summary,
     mappedBy: (summary) => summary.book,
     owner: true,
+    cascade: [Cascade.ALL]
   })
   summary!: Summary;
 }

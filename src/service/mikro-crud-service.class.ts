@@ -8,12 +8,11 @@ import {
   Reference,
   wrap,
 } from "@mikro-orm/core";
-import { EntityData, NonFunctionPropertyNames } from "@mikro-orm/core/typings";
+import { EntityData } from "@mikro-orm/core/typings";
 import { Inject } from "@nestjs/common";
 import { FilterQueryParam, OrderQueryParam, RelationPath } from "..";
-import { EntityFilters } from "../providers/entity-filters.interface";
-import { ENTITY_FILTERS } from "../providers/entity-filters.token";
-import { QueryParser } from "../providers/query-parser.service";
+import { QueryParser, ENTITY_FILTERS, EntityFilters } from "../providers";
+import NonFunctionPropertyNames = jest.NonFunctionPropertyNames;
 
 export abstract class MikroCrudService<
   Entity extends AnyEntity = AnyEntity,
@@ -56,7 +55,8 @@ export abstract class MikroCrudService<
         offset,
         orderBy: await this.parser.parseOrder({ order }),
         filters: this.filters(user),
-        populate: [...this.collectionFields, ...expand] as string[],
+        // TODO: Fix
+        populate: [...this.collectionFields, ...expand] as any,
         refresh,
       }
     );
@@ -64,7 +64,8 @@ export abstract class MikroCrudService<
   }
 
   async create({ data }: { data: CreateDto; user?: any }): Promise<Entity> {
-    const entity = this.repository.create(data);
+    // TODO: Fix if issue
+    const entity = this.repository.create(data as any);
     this.repository.persist(entity);
     return entity;
   }
@@ -82,7 +83,8 @@ export abstract class MikroCrudService<
   }): Promise<Entity> {
     return await this.repository.findOneOrFail(conditions, {
       filters: this.filters(user),
-      populate: [...this.collectionFields, ...expand] as string[],
+      // TODO: Typings
+      populate: [...this.collectionFields, ...expand] as any,
       refresh,
     });
   }
@@ -147,7 +149,7 @@ export abstract class MikroCrudService<
   }): Promise<Entity> {
     function digIn(entity: AnyEntity, relationNode?: RelationPath<Entity>) {
       const entityMeta = entity.__helper!.__meta;
-      entityMeta.relations.forEach(({ name }) => {
+      entityMeta.relations.forEach(({ name }: {name: string}) => {
         const value = entity[name];
         const relationPath = (
           relationNode ? `${relationNode}.${name}` : name

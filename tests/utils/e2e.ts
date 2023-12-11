@@ -18,6 +18,7 @@ export async function prepareE2E(
       MikroOrmModule.forRoot({
         type: "sqlite",
         dbName: ":memory:",
+        allowGlobalContext: true,
         entities,
         debug,
       }),
