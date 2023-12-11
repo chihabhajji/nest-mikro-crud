@@ -1,6 +1,6 @@
 import {AbstractSchemaGenerator, AnyEntity, EntityName, MikroORM} from "@mikro-orm/core";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
-import { ModuleMetadata } from "@nestjs/common";
+import {ModuleMetadata, ValidationPipe} from "@nestjs/common";
 import { Test } from "@nestjs/testing";
 import supertest from "supertest";
 import { Book, Line, Page, Summary } from "tests/e2e/entities";
@@ -32,6 +32,5 @@ export async function prepareE2E(
 
   const app = await module.createNestApplication().init();
   const requester = supertest(app.getHttpServer());
-
   return { module, app, requester };
 }

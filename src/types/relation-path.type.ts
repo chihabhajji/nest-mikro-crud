@@ -39,6 +39,7 @@ import { ExtractPath } from "../utils";
  *
  * type T = RelationPath<Membership>;
  */
+
 export type RelationPath<Entity> = ExtractPath<
   Entity,
   null | Record<string, any>,

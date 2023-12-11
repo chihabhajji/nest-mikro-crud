@@ -4,6 +4,8 @@ import {AnyEntity, EntityData} from "@mikro-orm/core";
 import {QueryParams} from "../dto";
 import {MikroCrudService} from "../service";
 import {LookupableField} from "../types";
+import {validate, validateOrReject} from "class-validator";
+import {BadRequestException} from "@nestjs/common";
 
 export abstract class MikroCrudController<
     Entity extends AnyEntity<Entity> = AnyEntity,
@@ -64,8 +66,7 @@ export abstract class MikroCrudController<
         {expand}: QueryParams<Entity>,
         user: any
     ): Promise<unknown> {
-        console.log('lookup', lookup)
-        console.log('lookupField', this.lookupField)
+        console.dir({lookup, field: this.lookupField})
         const entity = await this.service
             .retrieve({
                 // @ts-ignore
@@ -123,7 +124,13 @@ export abstract class MikroCrudController<
                 expand,
                 user,
             })
-
+        const errors = await validate(data);
+        if(errors.length > 0) {
+            throw new BadRequestException({
+                message: 'Validation failed',
+                errors,
+            })
+        }
         await this.service.update({entity, data, user});
         await this.service.save();
         entity = await this.service.retrieve({
