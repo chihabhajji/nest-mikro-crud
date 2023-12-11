@@ -1,13 +1,12 @@
 // noinspection JSUnusedGlobalSymbols,DuplicatedCode
 
 import {AnyEntity, EntityData} from "@mikro-orm/core";
-import {NotFoundException} from "@nestjs/common";
 import {QueryParams} from "../dto";
 import {MikroCrudService} from "../service";
 import {LookupableField} from "../types";
 
 export abstract class MikroCrudController<
-    Entity extends AnyEntity<Entity> = any,
+    Entity extends AnyEntity<Entity> = AnyEntity,
     CreateDto extends EntityData<Entity> = EntityData<Entity>,
     UpdateDto extends EntityData<Entity> = EntityData<Entity>,
     LookupField extends LookupableField<Entity> = LookupableField<Entity>,
@@ -72,9 +71,6 @@ export abstract class MikroCrudController<
                 },
                 expand,
                 user,
-            })
-            .catch(() => {
-                throw new NotFoundException();
             });
         await this.service.adjustPopulationStatus({entity, expand});
         await this.service.save();
@@ -94,9 +90,6 @@ export abstract class MikroCrudController<
                 },
                 expand,
                 user,
-            })
-            .catch(() => {
-                throw new NotFoundException(`${lookup} not found for ${this.}`);
             });
         await this.service.replace({entity, data, user});
         await this.service.save();
@@ -125,9 +118,7 @@ export abstract class MikroCrudController<
                 expand,
                 user,
             })
-            .catch(() => {
-                throw new NotFoundException();
-            });
+
         await this.service.update({entity, data, user});
         await this.service.save();
         entity = await this.service.retrieve({
@@ -149,9 +140,7 @@ export abstract class MikroCrudController<
                 },
                 user
             })
-            .catch(() => {
-                throw new NotFoundException();
-            });
+
         await this.service.destroy({entity, user});
         await this.service.save();
         return;
