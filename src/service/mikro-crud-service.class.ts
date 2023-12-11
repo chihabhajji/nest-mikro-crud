@@ -1,6 +1,6 @@
 import {
   AnyEntity,
-  Collection,
+  Collection, EntityProperty,
   EntityRepository,
   FilterQuery,
   NotFoundError,
@@ -147,7 +147,7 @@ export abstract class MikroCrudService<
   }): Promise<Entity> {
     function digIn(entity: AnyEntity, relationNode?: RelationPath<Entity>) {
       const entityMeta = entity.__helper!.__meta;
-      entityMeta.relations.forEach(({ name }: {name: string}) => {
+      entityMeta.relations.forEach(({ name }: EntityProperty<Entity>) => {
         const value = entity[name];
         const relationPath = (
           relationNode ? `${relationNode}.${name}` : name
