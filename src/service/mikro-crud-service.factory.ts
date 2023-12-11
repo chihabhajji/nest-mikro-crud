@@ -41,7 +41,7 @@ export class MikroCrudServiceFactory<
             @InjectRepository(entityClass)
             readonly repository!: EntityRepository<Entity>;
             readonly collectionFields = (new entityClass() as Entity)
-// @ts-ignore
+                // @ts-ignore
                 .__helper!.__meta.relations.filter(
                 ({reference, hidden}: { reference: ReferenceType, hidden: boolean }) =>
                     !hidden &&

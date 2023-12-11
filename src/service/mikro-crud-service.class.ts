@@ -3,8 +3,7 @@ import {
   Collection,
   EntityRepository,
   FilterQuery,
-  IdentifiedReference,
-  NotFoundError,
+  NotFoundError, Ref,
   Reference,
   wrap,
 } from "@mikro-orm/core";
@@ -64,9 +63,8 @@ export abstract class MikroCrudService<
   }
 
   async create({ data }: { data: CreateDto; user?: any }): Promise<Entity> {
-    // TODO: Fix if issue
     const entity = this.repository.create(data as any);
-    this.repository.persist(entity);
+    this.repository.getEntityManager().persist(entity);
     return entity;
   }
 
@@ -112,10 +110,11 @@ export abstract class MikroCrudService<
   }
 
   async destroy({ entity }: { entity: Entity; user?: any }): Promise<Entity> {
-    this.repository.remove(entity);
+    this.repository.getEntityManager().remove(entity);
     return entity;
   }
 
+  // noinspection JSUnusedGlobalSymbols
   async exists({
     conditions,
     user,
@@ -133,7 +132,7 @@ export abstract class MikroCrudService<
   }
 
   async save(): Promise<void> {
-    await this.repository.flush();
+    await this.repository.getEntityManager().flush();
   }
 
   /**
@@ -171,7 +170,7 @@ export abstract class MikroCrudService<
             collection.populated(true);
           }
         } else if (value instanceof Reference) {
-          const reference: IdentifiedReference<AnyEntity> = value;
+          const reference: Ref<AnyEntity> = value;
           if (!shouldPopulate) {
             reference.populated(false);
           } else {

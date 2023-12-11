@@ -29,6 +29,7 @@ export abstract class AbstractFactory<T> {
     return this;
   }
 
+  // noinspection JSUnusedGlobalSymbols
   applyClassDecorators(...decorators: ClassDecorator[]): this {
     decorators.forEach((d) => d(this.product));
     return this;

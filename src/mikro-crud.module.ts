@@ -1,7 +1,6 @@
 import { DynamicModule, Module } from "@nestjs/common";
 import { MikroCrudModuleOptions } from "./mikro-crud-module-options.interface";
-import { ENTITY_FILTERS } from "./providers/entity-filters.token";
-import { QueryParser } from "./providers/query-parser.service";
+import { ENTITY_FILTERS, QueryParser } from "./providers";
 
 @Module({
   providers: [
@@ -11,6 +10,7 @@ import { QueryParser } from "./providers/query-parser.service";
   exports: [QueryParser, ENTITY_FILTERS],
 })
 export class MikroCrudModule {
+  // noinspection JSUnusedGlobalSymbols
   static configure({ filters }: MikroCrudModuleOptions): DynamicModule {
     return {
       module: this,
