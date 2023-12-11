@@ -69,6 +69,7 @@ export abstract class MikroCrudController<
         console.dir({lookup, field: this.lookupField})
         const entity = await this.service
             .retrieve({
+                // @ts-ignore
                 conditions: {
                     [this.lookupField]: lookup,
                 },
@@ -88,7 +89,7 @@ export abstract class MikroCrudController<
     ): Promise<unknown> {
         let entity = await this.service
             .retrieve({
-                
+                // @ts-ignore
                 conditions: {
                     [this.lookupField]: lookup
                 },
@@ -116,7 +117,7 @@ export abstract class MikroCrudController<
     ): Promise<Entity> {
         let entity = await this.service
             .retrieve({
-                
+                // @ts-ignore
                 conditions: {
                     [this.lookupField]: lookup
                 },
@@ -146,7 +147,7 @@ export abstract class MikroCrudController<
     async destroy(lookup: Entity[LookupField], user: any): Promise<unknown> {
         const entity = await this.service
             .retrieve({
-                
+                // @ts-ignore
                 conditions: {
                     [this.lookupField]: lookup
                 },
