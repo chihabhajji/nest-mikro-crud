@@ -1,4 +1,4 @@
-import {EntityRepository} from "@mikro-orm/core";
+import {BaseEntity, EntityRepository} from "@mikro-orm/core";
 import {getRepositoryToken} from "@mikro-orm/nestjs";
 import {Controller, Injectable} from "@nestjs/common";
 import {TestingModule} from "@nestjs/testing";
@@ -55,9 +55,9 @@ describe("Basic CRUD", () => {
         }));
 
         const [bookRepo, pageRepo, summaryRepo] = [
-            module.get<EntityRepository<Book>>(getRepositoryToken(Book)),
-            module.get<EntityRepository<Page>>(getRepositoryToken(Page)),
-            module.get<EntityRepository<Summary>>(getRepositoryToken(Summary)),
+            module.get<EntityRepository<BaseEntity<Book, "id">>>(getRepositoryToken(Book)),
+            module.get<EntityRepository<BaseEntity<Page, "id">>>(getRepositoryToken(Page)),
+            module.get<EntityRepository<BaseEntity<Summary, "id">>>(getRepositoryToken(Summary)),
         ];
 
         for (let i = 1; i <= 5; i++) {
@@ -80,7 +80,6 @@ describe("Basic CRUD", () => {
         }
         summaryRepo.getEntityManager().persist(
             summaryRepo.create(
-                // @ts-ignore
                 {
                     id: 6,
                     text: "new",

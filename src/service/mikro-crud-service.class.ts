@@ -82,8 +82,7 @@ export abstract class MikroCrudService<
   }): Promise<Entity> {
     return await this.repository.findOneOrFail(conditions, {
       filters: this.filters(user),
-      // TODO: Typings
-      populate: [...this.collectionFields, ...expand] as any,
+      // populate: [...this.collectionFields, ...expand],
       refresh,
     });
   }

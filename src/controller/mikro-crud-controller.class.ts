@@ -1,10 +1,10 @@
 // noinspection JSUnusedGlobalSymbols,DuplicatedCode
 
 import {AnyEntity, EntityData, FilterQuery} from "@mikro-orm/core";
-import { NotFoundException } from "@nestjs/common";
-import { QueryParams } from "../dto";
-import { MikroCrudService } from "../service";
-import { LookupableField } from "../types";
+import {NotFoundException} from "@nestjs/common";
+import {QueryParams} from "../dto";
+import {MikroCrudService} from "../service";
+import {LookupableField} from "../types";
 
 export abstract class MikroCrudController<
   Entity extends AnyEntity<Entity> = any,
@@ -65,10 +65,9 @@ export abstract class MikroCrudController<
     { expand }: QueryParams<Entity>,
     user: any
   ): Promise<unknown> {
-    const conditions = { [this.lookupField]: lookup };
+    const conditions: FilterQuery<Entity> = { [this.lookupField]: lookup };
     const entity = await this.service
       .retrieve({
-        // @ts-ignore
         conditions: conditions,
         expand,
         user,
@@ -87,10 +86,9 @@ export abstract class MikroCrudController<
     data: CreateDto,
     user: any
   ): Promise<unknown> {
-    const conditions = { [this.lookupField]: lookup };
+    const conditions: FilterQuery<Entity> = { [this.lookupField]: lookup };
     let entity = await this.service
       .retrieve({
-        // @ts-ignore
         conditions,
         expand,
         user,
@@ -117,7 +115,6 @@ export abstract class MikroCrudController<
     data: UpdateDto,
     user: any
   ): Promise<unknown> {
-    // @ts-ignore
     const conditions: FilterQuery<Entity> = { [this.lookupField]: lookup };
     let entity = await this.service
       .retrieve({
@@ -144,7 +141,6 @@ export abstract class MikroCrudController<
   async destroy(lookup: Entity[LookupField], user: any): Promise<unknown> {
     const conditions = { [this.lookupField]: lookup };
     const entity = await this.service
-        // @ts-ignore
       .retrieve({ conditions, user })
       .catch(() => {
         throw new NotFoundException();
